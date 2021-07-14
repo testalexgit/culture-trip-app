@@ -1,7 +1,7 @@
 FROM node:12.2
 
 ENV HOME=/home/app
-ENV API_KEY=4ee009c16c55367cf3c9059be7053b9f
+ENV API_KEY=123
 
 RUN apt-get update && apt-get install htop
 
