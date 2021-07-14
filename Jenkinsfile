@@ -38,6 +38,8 @@ node("master"){
        }
       stage("Build Docker Image"){
            try{
+               sh "sudo sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package-lock.json"
+               sh "sudo sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package.json"
                sh "docker build -t "+imag+" ."
                sh "docker tag branch_"+branch+" "+imag
                }catch (Exception e) {
