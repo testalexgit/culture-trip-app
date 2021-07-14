@@ -39,6 +39,7 @@ node("master"){
       stage("Build Docker Image"){
            try{
                sh "docker build -t "+imag+" ."
+               sh "docker tag branch_"+branch+" "+imag
                }catch (Exception e) {
                        sh "echo Not exist"
                      }          
