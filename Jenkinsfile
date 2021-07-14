@@ -60,5 +60,14 @@ node("master"){
                        sh "echo docker Not exist"
                      }          
        }
+  
+        stage("Push Docker Image"){
+           try{
+               sh "docker tag "+imag+" kipkent/"+imag
+               sh "docker push kipkent/"+imag
+               }catch (Exception e) {
+                       sh "echo push Not exist"
+                     }          
+       }
       
 }
