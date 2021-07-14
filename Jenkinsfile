@@ -38,7 +38,7 @@ node("master"){
        }
       stage("Build Docker Image"){
             withCredentials([string(credentialsId: 'c906462e-cc63-41ab-be6e-18af085bc996', variable: 'PW1')]) {
-            sh "sed -i -e '/API_KEY/s/123/{PW1}/' Dockerfile"
+            sh "sed -i -e '/API_KEY/s/123/${PW1}/' Dockerfile"
             }
         
            try{
