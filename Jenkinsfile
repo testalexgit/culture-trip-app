@@ -15,7 +15,6 @@ node("master"){
                sh "echo bob"
                }catch (Exception e) {
                        sh "echo Not exist"
-                     }
-           
+                     }          
        }
 }
