@@ -1,7 +1,17 @@
 node("master"){
 
-//    println env_name
+  println env.JOB_NAME
+  println env.BUILD_ID
 
+  def name=env.JOB_NAME.tokenize('.')[0]
+  service=name.toLowerCase()
+  println service
+  
+  def branch=env.JOB_NAME.tokenize('.')[1]
+  println branch
+      
+  def imag="${service}:v"+env.BUILD_ID
+  println imag
       stage('Clean up Workspace')      {
           deleteDir()
       }
@@ -28,17 +38,17 @@ node("master"){
        }
       stage("Build Docker Image"){
            try{
-               sh "docker build -t weather-api ."
+               sh "docker build -t "+imag+" ."
                }catch (Exception e) {
                        sh "echo Not exist"
                      }          
        }
        stage("Uni test Docker Image"){
            try{
-               sh "docker run -d -p 3000:3000 --detach --name unitest-weather-api weather-api:latest"
+               sh "docker run -d -p 3000:3000 --detach --name unitest-"+service+" "+imag
                sh "sleep 10"
-               sh "docker stop unitest-weather-api"
-               sh "docker rm unitest-weather-api"
+               sh "docker stop unitest-"+service
+               sh "docker rm unitest-"+service
                }catch (Exception e) {
                        sh "echo docker Not exist"
                      }          
