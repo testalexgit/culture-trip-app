@@ -37,9 +37,13 @@ node("master"){
                      }          
        }
       stage("Build Docker Image"){
+            withCredentials([string(credentialsId: 'c906462e-cc63-41ab-be6e-18af085bc996', variable: 'PW1')]) {
+            sh "sed -i -e '/API_KEY/s/123/{PW1}/' Dockerfile"
+            }
+        
            try{
-               sh "sudo sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package-lock.json"
-               sh "sudo sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package.json"
+               sh "sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package-lock.json"
+               sh "sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package.json"
                sh "docker build -t "+imag+" ."
                sh "docker tag branch_"+branch+" "+imag
                }catch (Exception e) {
