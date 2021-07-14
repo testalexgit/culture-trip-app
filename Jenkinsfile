@@ -20,9 +20,9 @@ node("master"){
           sh "pwd;ls"
       }
 
-      stage("Check"){
+      stage("Build"){
            try{
-               sh "echo bob"
+               sh "npm install --silent --progress=false"
                }catch (Exception e) {
                        sh "echo Not exist"
                      }          
