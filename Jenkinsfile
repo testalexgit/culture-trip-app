@@ -20,8 +20,8 @@ node("master"){
       
       stage("Kill_Delete Containers,Images"){
            try{
-               sh "docker rm -f $(docker ps -aq)"
-               sh "docker rmi -f $(docker images -q)"
+               sh "docker rm -f \$(docker ps -aq)"
+               sh "docker rmi -f \$(docker images -q)"
                }catch (Exception e) {
                        sh "echo Kill_Delete Not exist"
                      }          
