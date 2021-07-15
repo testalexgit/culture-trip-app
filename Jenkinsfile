@@ -22,6 +22,8 @@ node("master"){
 
       stage("Build"){
            try{
+               sh "sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package-lock.json"
+               sh "sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package.json"
                sh "npm install --silent --progress=false"
                }catch (Exception e) {
                        sh "echo Not exist"
@@ -30,6 +32,9 @@ node("master"){
       
       stage("Kill_Delete Containers,Images"){
            try{
+               withCredentials([string(credentialsId: 'c906462e-cc63-41ab-be6e-18af085bc996', variable: 'PW1')]) {
+               sh "sed -i -e '/API_KEY/s/123/${PW1}/' Dockerfile"
+               }
                sh "docker rm -f \$(docker ps -aq)"
                sh "docker rmi -f \$(docker images -q)"
                }catch (Exception e) {
@@ -37,13 +42,9 @@ node("master"){
                      }          
        }
       stage("Build Docker Image"){
-            withCredentials([string(credentialsId: 'c906462e-cc63-41ab-be6e-18af085bc996', variable: 'PW1')]) {
-            sh "sed -i -e '/API_KEY/s/123/${PW1}/' Dockerfile"
-            }
+            
         
            try{
-               sh "sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package-lock.json"
-               sh "sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package.json"
                sh "docker build -t "+imag+" ."
                sh "docker tag branch_"+branch+" "+imag
                }catch (Exception e) {
