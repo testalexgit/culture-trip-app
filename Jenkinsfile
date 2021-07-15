@@ -83,7 +83,7 @@ node("master"){
        }
         stage("Deploy to kube"){
            try{
-               sh "aws eks --region eu-west-1 update-kubeconfig --name testalex2"
+               //sh "aws eks --region eu-west-1 update-kubeconfig --name testalex2"
                sh "kubectl get svc && kubectl get pods"
                sh "kubectl apply -f deploy.yaml"
                sh "kubectl apply -f lb.yaml"
