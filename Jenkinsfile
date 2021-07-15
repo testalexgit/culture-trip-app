@@ -26,7 +26,7 @@ node("master"){
                sh "sed -i -e '/name/s/Culture Trip EngOps Test/"+service+"/' package.json"
                sh "npm install --silent --progress=false"
                }catch (Exception e) {
-                       sh "echo Not exist"
+                       error("Buld Not exist")
                      }          
        }
       
@@ -35,17 +35,15 @@ node("master"){
                sh "docker rm -f \$(docker ps -aq)"
                sh "docker rmi -f \$(docker images -q)"
                }catch (Exception e) {
-                       sh "echo Kill_Delete Not exist"
+                       error("Kill_Delete Not exist")
                      }          
        }
       stage("Build Docker Image"){
-            
-        
            try{
                sh "docker build -t "+imag+" ."
                sh "docker tag branch_"+branch+" "+imag
                }catch (Exception e) {
-                       sh "echo Not exist"
+                       error("Image Not exist")
                      }          
        }
        stage("Uni test Docker Image"){
@@ -55,7 +53,7 @@ node("master"){
                sh "docker stop unitest-"+service
                sh "docker rm unitest-"+service
                }catch (Exception e) {
-                       sh "echo docker Not exist"
+                       error("docker Not exist")
                      }          
        }
   
@@ -64,7 +62,7 @@ node("master"){
                sh "docker tag "+imag+" kipkent/"+imag
                sh "docker push kipkent/"+imag
                }catch (Exception e) {
-                       sh "echo push Not exist"
+                       error("push Not exist")
                      }          
        }
   
@@ -78,7 +76,7 @@ node("master"){
                sh "sed -i -e '/value/s/123/${PW1}/' deploy.yaml"
                }
                }catch (Exception e) {
-                       sh "echo push Not exist"
+                       error("push Not exist")
                      }          
        }
         stage("Deploy to kube"){
@@ -87,14 +85,15 @@ node("master"){
                sh "kubectl apply -f deploy.yaml"
                sh "kubectl apply -f lb.yaml"
                }catch (Exception e) {
-                       sh "echo push Not exist"
+                       error("Deploy Not exist")
                      }          
        } 
         stage("Unitest in kube"){
            try{
+               sh "sleep 15"
                sh "wget http://http://a1a62ff1db6ee4813af9ac6b3fd0e10c-2050991439.eu-west-1.elb.amazonaws.com:3000"
                }catch (Exception e) {
-                       sh "echo docker in kube Not exist"
+                       error("docker in kube Not exist")
                      }          
        }
 }
