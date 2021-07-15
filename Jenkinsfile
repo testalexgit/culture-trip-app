@@ -32,8 +32,7 @@ node("master"){
       
       stage("Kill_Delete Containers,Images"){
            try{
-               sh "docker rm -f \$(docker ps -aq)"
-               sh "docker rmi -f \$(docker images -q)"
+               sh 'sh /home/ubuntu/killdocker.sh'
                }catch (Exception e) {
                        error("Kill_Delete Not exist")
                      }          
@@ -41,7 +40,6 @@ node("master"){
       stage("Build Docker Image"){
            try{
                sh "docker build -t "+imag+" ."
-               sh "docker tag branch_"+branch+" "+imag
                }catch (Exception e) {
                        error("Image Not exist")
                      }          
