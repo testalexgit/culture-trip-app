@@ -32,9 +32,6 @@ node("master"){
       
       stage("Kill_Delete Containers,Images"){
            try{
-               withCredentials([string(credentialsId: 'c906462e-cc63-41ab-be6e-18af085bc996', variable: 'PW1')]) {
-               sh "sed -i -e '/API_KEY/s/123/${PW1}/' Dockerfile"
-               }
                sh "docker rm -f \$(docker ps -aq)"
                sh "docker rmi -f \$(docker images -q)"
                }catch (Exception e) {
@@ -77,6 +74,9 @@ node("master"){
                sh "sed -i 's/test/"+service+"/' deploy.yaml"
                sh "sed -i -e '/image/s/imhub/"+imag+"/' deploy.yaml"
                sh "sed -i 's/test/"+service+"/' lb.yaml"
+               withCredentials([string(credentialsId: 'c906462e-cc63-41ab-be6e-18af085bc996', variable: 'PW1')]) {
+               sh "sed -i -e '/API_KEY/s/123/${PW1}/' deploy.yaml"
+               }
                }catch (Exception e) {
                        sh "echo push Not exist"
                      }          
