@@ -89,7 +89,7 @@ node("master"){
         stage("Unitest in kube"){
            try{
                sh "sleep 15"
-               sh "wget http://a1a62ff1db6ee4813af9ac6b3fd0e10c-2050991439.eu-west-1.elb.amazonaws.com:3000"
+               sh 'sh /home/ubuntu/unitest.sh '+service
                }catch (Exception e) {
                        error("docker in kube Not exist")
                      }          
