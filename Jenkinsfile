@@ -70,5 +70,27 @@ node("master"){
                        sh "echo push Not exist"
                      }          
        }
-      
+  
+        stage("Create yaml file for Kube"){
+          def hubimage="kipkent/"+imag
+          println hubimage
+           try{
+               sh "cp -avr /home/ubuntu/kube/* ."
+               sh "sed -i 's/test/"+service+"/' deploy.yaml"
+               sh "sed -i -e '/image/s/imhub/"+hubimage+"/' deploy.yaml"
+               sh "sed -i 's/test/"+service+"/' lb.yaml"
+               }catch (Exception e) {
+                       sh "echo push Not exist"
+                     }          
+       }
+        stage("Deploy to kube"){
+           try{
+               sh "aws eks --region eu-west-1 update-kubeconfig --name testalex2"
+               sh "kubectl get svc && kubectl get pods"
+               sh "kubectl apply -f deploy.yaml"
+               sh "kubectl apply -f lb.yaml"
+               }catch (Exception e) {
+                       sh "echo push Not exist"
+                     }          
+       }  
 }
