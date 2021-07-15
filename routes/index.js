@@ -9,7 +9,7 @@ function convertKelvinToCelsius(k) {
 }
 
 router.get('/', async function (req, res, next) {
-    const cityName = req.query.cityName || 'London';
+    const cityName = req.query.cityName || 'Kiev';
     debug('cityName: ', req.query.cityName);
     try {
         const data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`);
