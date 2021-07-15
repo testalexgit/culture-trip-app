@@ -72,12 +72,10 @@ node("master"){
        }
   
         stage("Create yaml file for Kube"){
-          def hubimage="kipkent/"+imag
-          println hubimage
            try{
                sh "cp -avr /home/ubuntu/kube/* ."
                sh "sed -i 's/test/"+service+"/' deploy.yaml"
-               sh "sed -i -e '/image/s/imhub/"+hubimage+"/' deploy.yaml"
+               sh "sed -i -e '/image/s/imhub/"+imag+"/' deploy.yaml"
                sh "sed -i 's/test/"+service+"/' lb.yaml"
                }catch (Exception e) {
                        sh "echo push Not exist"
