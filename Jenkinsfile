@@ -75,7 +75,7 @@ node("master"){
                sh "sed -i -e '/image/s/imhub/"+imag+"/' deploy.yaml"
                sh "sed -i 's/test/"+service+"/' lb.yaml"
                withCredentials([string(credentialsId: 'c906462e-cc63-41ab-be6e-18af085bc996', variable: 'PW1')]) {
-               sh "sed -i -e '/API_KEY/s/123/${PW1}/' deploy.yaml"
+               sh "sed -i -e '/value/s/123/${PW1}/' deploy.yaml"
                }
                }catch (Exception e) {
                        sh "echo push Not exist"
