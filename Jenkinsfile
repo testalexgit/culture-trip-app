@@ -83,12 +83,18 @@ node("master"){
        }
         stage("Deploy to kube"){
            try{
-               //sh "aws eks --region eu-west-1 update-kubeconfig --name testalex2"
                sh "kubectl get svc && kubectl get pods"
                sh "kubectl apply -f deploy.yaml"
                sh "kubectl apply -f lb.yaml"
                }catch (Exception e) {
                        sh "echo push Not exist"
                      }          
-       }  
+       } 
+        stage("Unitest in kube"){
+           try{
+               sh "wget http://ad6d5d62769d0431f8203570f800475c-969633393.eu-west-1.elb.amazonaws.com:3000"
+               }catch (Exception e) {
+                       sh "echo docker in kube Not exist"
+                     }          
+       }
 }
